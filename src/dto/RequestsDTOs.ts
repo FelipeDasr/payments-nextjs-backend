@@ -13,7 +13,8 @@ export interface IAuthenticationRequestDTO extends NextApiRequest {
 
 export interface IAuthenticatedRequestDTO extends NextApiRequest {
     locals: {
-        accountId: number
+        accountId: number,
+        cash: number
     }
 }
 
