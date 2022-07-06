@@ -1,7 +1,7 @@
 import { IAuthenticationDTO, IAccountDTO } from "./AccountDTOs";
 import { IAccountMovementDTO } from "./AccountMovementDTOs";
-import { IQueryDTO } from "./QueryDTOs";
 import { NextApiRequest } from "next";
+import { INewTransferDTO } from "./TransferDTOs";
 
 export interface ICreateAccountRequestDTO extends NextApiRequest {
     body: IAccountDTO
@@ -19,4 +19,8 @@ export interface IAuthenticatedRequestDTO extends NextApiRequest {
 
 export interface IAccountMovementRequestDTO extends IAuthenticatedRequestDTO {
     body: IAccountMovementDTO;
+}
+
+export interface INewTransferRequestDTO extends IAuthenticatedRequestDTO { 
+    body: INewTransferDTO
 }
