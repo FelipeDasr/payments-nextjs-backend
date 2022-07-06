@@ -43,6 +43,7 @@ model Transaction {
 model AccountMovement {
   id Int @id @default(autoincrement())
   type AccountMovementType
+  amount Float
   accountId Int
 
   account Account @relation(fields: [accountId], references: [id])
