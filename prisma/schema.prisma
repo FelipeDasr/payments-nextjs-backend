@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  referentialIntegrity = "prisma"
+
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Account {
+  id         Int @id @default(autoincrement())
+  name       String @db.VarChar(50)
+  email      String @unique
+  password   String
+  cash       Float @default(0)
+
+  payers     Transaction[] @relation("payer")
+  recipients Transaction[] @relation("recipient")
+  accountMovements AccountMovement[]
+
+  @@map("users")
+}
+
+model Transaction {
+  id            Int @id @default(autoincrement())
+  payerId       Int
+  recipientId   Int
+  value         Float
+
+  payer         Account @relation(name: "payer", fields: [payerId], references: [id])
+  recipient     Account @relation(name: "recipient", fields: [recipientId], references: [id])
+
+  @@map("transactions")
+}
+
+model AccountMovement {
+  id Int @id @default(autoincrement())
+  type AccountMovementType
+  accountId Int
+
+  account Account @relation(fields: [accountId], references: [id])
+
+  @@map("account_movements")
+}
+
+enum AccountMovementType {
+  cashwithdrawal
+  deposit
+}
