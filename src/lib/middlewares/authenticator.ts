@@ -30,7 +30,10 @@ export const authenticator = (
         const { email, accountId: id } = data as ITokenPayload;
         const account = await prisma.account.findFirst({
             where: { email, id, },
-            select: { id: true }
+            select: { 
+                id: true,
+                cash: true
+            }
         });
 
         if (!account) {
@@ -39,7 +42,10 @@ export const authenticator = (
             });
         }
 
-        req.locals = { accountId: account.id };
+        req.locals = { 
+            accountId: account.id,
+            cash: account.cash
+        };
         next();
     });
 }
