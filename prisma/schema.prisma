@@ -25,7 +25,7 @@ model Account {
   recipients Transaction[] @relation("recipient")
   accountMovements AccountMovement[]
 
-  @@map("users")
+  @@map("accounts")
 }
 
 model Transaction {
