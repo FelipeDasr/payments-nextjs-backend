@@ -28,6 +28,7 @@ export const createAccount = async (req: ICreateAccountRequestDTO, res: NextApiR
                 name: true,
                 email: true,
                 cash: true,
+                createdAt: true
             },
         });
 
