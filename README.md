@@ -18,8 +18,167 @@ Primeiro crie um arquivo **`.env`** na pasta raiz do projeto, e preencha todos o
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
 ```
 
-A API estará rodando em: [http://localhost:3000/api](http://localhost:3000/api)
+A API estará rodando em: [http://localhost:3000/api/](http://localhost:3000/api/)
+
+---
+
+## Rotas
+
+Para testar os endpoints importe o [arquivo de rotas](./Insomnia_routes_2022-07-06.json) no seu insomnia.
+
+### Criar conta
+
+| Rota           | Método     |
+|----------------|------------|
+| **`/account`** | **`POST`** |
+
+**Parâmetros obrigatórios**
+
+| Campo          | Tipo         | Local | Descrição              |
+|----------------|--------------|-------|------------------------|
+| **`name`**     | **`string`** | body  | Nome do usuário        |
+| **`email`**    | **`string`** | body  | E-mail do usuário      |
+| **`password`** | **`string`** | body  | Senha do usuário       |
+| **`cash`**     | **`double`** | body  | Saldo inicial da conta |
+
+**Exemplo de requisição**
+
+**`POST`** **`/account`**
+
+```json
+{
+    "name": "Thiago souza",
+    "email": "user@email.com",
+    "password": "123456",
+    "cash": 100
+}
+```
+
+**Resposta de sucesso**
+
+**Código**: **`201 CREATED`**
+
+```json
+{
+    "id": 4,
+    "name": "Thiago souza",
+    "email": "user@email.com",
+    "cash": 100,
+    "createdAt": "2022-07-07T02:07:39.533Z"
+}
+```
+---
+
+### Se autenticar
+
+| Rota                  | Método     |
+|-----------------------|------------|
+| **`/account/signin`** | **`POST`** |
+
+**Parâmetros obrigatórios**
+
+| Campo          | Tipo         | Local | Descrição         |
+|----------------|--------------|-------|-------------------|
+| **`email`**    | **`string`** | body  | E-mail do usuário |
+| **`password`** | **`string`** | body  | Senha do usuário  |
+
+**Exemplo de requisição**
+
+**`POST`** **`/account/signin`**
+
+```json
+{
+    "email": "user@email.com",
+    "password": "123456"
+}
+```
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXJAZW1haWwuY29tIiwiYWNjb3VudElkIjo0LCJpYXQiOjE2NTcxNTk3ODMsImV4cCI6MTY1NzI0NjE4M30.hKBdCDkeMQHp1j9Zuhzwi54MBMz06vIDQCTiOoTEzSc"
+}
+```
+
+O `token` recebido deve ser enviado no header de autorização de todas as requisições como um `Bearer token`, execeto nas rotas de `criação de conta` e `autenticação`.
+
+---
+
+### Depositar dinheiro na conta
+
+| Rota                   | Método     |
+|------------------------|------------|
+| **`/account/deposit`** | **`POST`** |
+
+**Parâmetros obrigatórios**
+
+| Campo        | Tipo         | Local | Descrição                          |
+|--------------|--------------|-------|------------------------------------|
+| **`amount`** | **`double`** | body  | Valor que será depositado na conta |
+
+**Exemplo de requisição**
+
+**`POST`** **`/account/deposit`**
+
+```json
+{
+    "amount": 100
+}
+```
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+Retorna o saldo da conta
+
+```json
+{
+    "cash": 200
+}
+```
+
+---
+
+### Sacar dinheiro da conta
+
+| Rota                          | Método     |
+|-------------------------------|------------|
+| **`/account/withdraw_money`** | **`POST`** |
+
+**Parâmetros obrigatórios**
+
+| Campo        | Tipo         | Local | Descrição                          |
+|--------------|--------------|-------|------------------------------------|
+| **`amount`** | **`double`** | body  | Valor que será debitado da conta |
+
+**Exemplo de requisição**
+
+**`POST`** **`/account/withdraw_money`**
+
+```json
+{
+    "amount": 50
+}
+```
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+Retorna o saldo da conta
+
+```json
+{
+    "cash": 150
+}
+```
+
+---
