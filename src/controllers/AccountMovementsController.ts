@@ -37,8 +37,14 @@ export const depositMoney = async (req: IAccountMovementRequestDTO, res: NextApi
 
 export const withdrawMoney = async (req: IAccountMovementRequestDTO, res: NextApiResponse) => {
     try {
-        const { accountId } = req.locals;
+        const { accountId, cash } = req.locals;
         const { amount } = req.body;
+
+        if (amount > cash) {
+            return res.status(200).json({
+                message: "Insufficient funds"
+            });
+        }
 
         const result = await prisma.account.update({
             where: { id: accountId },
@@ -84,7 +90,7 @@ export const getAccountMovements = async (req: IAccountMovementRequestDTO, res: 
                     createdAt: true
                 },
                 take: limit,
-                skip: page 
+                skip: page
             }),
             prisma.accountMovement.count({
                 where: { accountId }
