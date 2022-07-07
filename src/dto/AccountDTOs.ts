@@ -3,6 +3,7 @@ export interface IAccountDTO {
     email: string;
     password: string;
     cash: number;
+    createdAt: Date;
 }
 
 export interface IAccountRecordDTO extends IAccountDTO {
