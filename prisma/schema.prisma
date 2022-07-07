@@ -15,16 +15,17 @@ datasource db {
 }
 
 model Account {
-  id         Int @id @default(autoincrement())
-  name       String @db.VarChar(50)
-  email      String @unique
-  password   String
-  cash       Float @default(0)
+  id               Int @id @default(autoincrement())
+  name             String @db.VarChar(50)
+  email            String @unique
+  password         String
+  cash             Float @default(0)
 
-  payers     Transaction[] @relation("payer")
-  recipients Transaction[] @relation("recipient")
+  payers           Transaction[] @relation("payer")
+  recipients       Transaction[] @relation("recipient")
   accountMovements AccountMovement[]
 
+  createdAt        DateTime @default(now())
   @@map("accounts")
 }
 
@@ -37,6 +38,7 @@ model Transaction {
   payer         Account @relation(name: "payer", fields: [payerId], references: [id])
   recipient     Account @relation(name: "recipient", fields: [recipientId], references: [id])
 
+  createdAt        DateTime @default(now())
   @@map("transactions")
 }
 
@@ -48,6 +50,7 @@ model AccountMovement {
 
   account Account @relation(fields: [accountId], references: [id])
 
+  createdAt        DateTime @default(now())
   @@map("account_movements")
 }
 
