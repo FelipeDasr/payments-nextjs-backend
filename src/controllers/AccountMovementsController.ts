@@ -80,7 +80,8 @@ export const getAccountMovements = async (req: IAccountMovementRequestDTO, res: 
                 where: { accountId },
                 select: {
                     type: true,
-                    amount: true
+                    amount: true,
+                    createdAt: true
                 },
                 take: limit,
                 skip: page 
