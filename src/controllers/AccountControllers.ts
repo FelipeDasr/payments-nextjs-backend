@@ -1,4 +1,8 @@
-import { IAuthenticationRequestDTO, ICreateAccountRequestDTO } from '../dto/RequestsDTOs';
+import { 
+    IAuthenticationRequestDTO,
+    IAuthenticatedRequestDTO,
+    ICreateAccountRequestDTO 
+} from '../dto/RequestsDTOs';
 import { NextApiResponse } from 'next';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -20,7 +24,7 @@ export const createAccount = async (req: ICreateAccountRequestDTO, res: NextApiR
         }
 
         account.password = bcrypt.hashSync(account.password, 10);
-        
+
         const newAccount = await prisma.account.create({
             data: account,
             select: {
@@ -72,6 +76,19 @@ export const authenticate = async (req: IAuthenticationRequestDTO, res: NextApiR
     catch (e) {
         res.status(500).json({
             message: 'Error when trying to authenticate account'
+        });
+    }
+}
+
+export const checkTheBalance = async (req: IAuthenticatedRequestDTO, res: NextApiResponse) => {
+    try {
+        return res.status(200).json({
+            ...req.locals
+        });
+    }
+    catch (e) {
+        res.status(500).json({
+            message: 'Error when trying to check the balance'
         });
     }
 }
