@@ -155,8 +155,8 @@ Retorna o saldo da conta
 
 **Parâmetros obrigatórios**
 
-| Campo        | Tipo         | Local | Descrição                          |
-|--------------|--------------|-------|------------------------------------|
+| Campo        | Tipo         | Local | Descrição                        |
+|--------------|--------------|-------|----------------------------------|
 | **`amount`** | **`double`** | body  | Valor que será debitado da conta |
 
 **Exemplo de requisição**
@@ -182,3 +182,204 @@ Retorna o saldo da conta
 ```
 
 ---
+
+### Consultar saldo
+
+| Rota                   | Método    |
+|------------------------|-----------|
+| **`/account/balance`** | **`GET`** |
+
+**Exemplo de requisição**
+
+**`GET`** **`/account/balance`**
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+Retorna o saldo da conta
+
+```json
+{
+    "accountId": 4,
+    "cash": 150
+}
+```
+
+---
+
+### Ver histórico de movimentação
+
+| Rota                     | Método    |
+|--------------------------|-----------|
+| **`/account/movements`** | **`GET`** |
+
+**Parâmetros opcionais**
+
+| Campo       | Tipo          | Local | default | Descrição                          |
+|-------------|---------------|-------|---------|------------------------------------|
+| **`page`**  | **`integer`** | body  | 0       | Página dos dados                   |
+| **`limit`** | **`integer`** | body  | 50      | Quantidade de registros por página |
+
+**Exemplo de requisição**
+
+**`GET`** **`/account/movements`**
+
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+```json
+{
+    "data": [
+        {
+            "type": "deposit",
+            "amount": 100,
+            "createdAt": "2022-07-07T02:16:30.484Z"
+        },
+        {
+            "type": "cashwithdrawal",
+            "amount": 50,
+            "createdAt": "2022-07-07T02:18:07.246Z"
+        },
+        {
+            "type": "deposit",
+            "amount": 34.5,
+            "createdAt": "2022-07-07T12:40:55.947Z"
+        },
+        {
+            "type": "cashwithdrawal",
+            "amount": 25.4,
+            "createdAt": "2022-07-07T12:41:16.532Z"
+        }
+    ],
+    "count": 4
+}
+```
+
+---
+
+### Fazer transferências para outro usuário
+
+| Rota             | Método     |
+|------------------|------------|
+| **`/transfers`** | **`POST`** |
+
+**Parâmetros obrigatórios**
+
+| Campo             | Tipo          | Local | Descrição                  |
+|-------------------|---------------|-------|----------------------------|
+| **`recipientId`** | **`integer`** | body  | ID do destinatário         |
+| **`value`**       | **`integer`** | body  | Valor que será transferido |
+
+**Exemplo de requisição**
+
+**`POST`** **`/transfers`**
+
+```json
+{
+    "recipientId": 2,
+    "value": 100
+}
+```
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+```json
+{
+    "payer": {
+        "name": "Thiago souza",
+        "email": "user@email.com",
+        "cash": 59.09999999999999
+    },
+    "recipient": {
+        "name": "Felipe",
+        "email": "felipe.email1@email.com"
+    },
+    "transferData": {
+        "id": 8,
+        "payerId": 4,
+        "recipientId": 2,
+        "value": 100,
+        "createdAt": "2022-07-07T12:51:01.762Z"
+    }
+}
+```
+---
+
+### Ver histórico de transferências
+
+| Rota             | Método    |
+|------------------|-----------|
+| **`/transfers`** | **`GET`** |
+
+**Parâmetros opcionais**
+
+| Campo       | Tipo          | Local | default | Descrição                          |
+|-------------|---------------|-------|---------|------------------------------------|
+| **`page`**  | **`integer`** | body  | 0       | Página dos dados                   |
+| **`limit`** | **`integer`** | body  | 50      | Quantidade de registros por página |
+
+**Exemplo de requisição**
+
+**`GET`** **`/transfers`**
+
+**Resposta de sucesso**
+
+**Código**: **`200 OK`**
+
+```json
+{    
+    "data": [
+        {
+            "id": 8,
+            "payerId": 4,
+            "recipientId": 2,
+            "value": 100,
+            "createdAt": "2022-07-07T12:51:01.762Z",
+            "payer": {
+            	"name": "Thiago souza",
+            	"email": "user@email.com"
+            },
+            "recipient": {
+            	"name": "Felipe",
+            	"email": "felipe.email1@email.com"
+            }
+        },
+        {
+            "id": 9,
+            "payerId": 5,
+            "recipientId": 4,
+            "value": 56,
+            "createdAt": "2022-07-07T13:00:59.841Z",
+            "payer": {
+            	"name": "Andersson sandin",
+            	"email": "user_2@email.com"
+            },
+            "recipient": {
+            	"name": "Thiago souza",
+            	"email": "user@email.com"
+            }
+        },
+        {
+            "id": 10,
+            "payerId": 2,
+            "recipientId": 4,
+            "value": 100,
+            "createdAt": "2022-07-07T13:02:30.111Z",
+            "payer": {
+            	"name": "Felipe",
+            	"email": "felipe.email1@email.com"
+            },
+            "recipient": {
+            	"name": "Thiago souza",
+            	"email": "user@email.com"
+            }
+        }
+    ],
+    "count": 3
+}
+```
