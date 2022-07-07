@@ -89,6 +89,9 @@ export const getAccountMovements = async (req: IAccountMovementRequestDTO, res: 
                     amount: true,
                     createdAt: true
                 },
+                orderBy: {
+                    id: 'desc'
+                },
                 take: limit,
                 skip: page
             }),

@@ -110,6 +110,9 @@ export const getTransfers = async (req: IAuthenticatedRequestDTO, res: NextApiRe
                         select: fieldsToSelect
                     }
                 },
+                orderBy: {
+                    id: 'desc'
+                },
                 take: limit,
                 skip: page
             }),
