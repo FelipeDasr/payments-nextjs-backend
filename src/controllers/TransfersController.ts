@@ -94,27 +94,38 @@ export const getTransfers = async (req: IAuthenticatedRequestDTO, res: NextApiRe
             email: true,
         }
 
-        const transfers = await prisma.transaction.findMany({
-            where: {
-                OR: [
-                    { payerId: accountId },
-                    { recipientId: accountId }
-                ]
-            },
-            include: {
-                payer: {
-                    select: fieldsToSelect
+        const transfers = await prisma.$transaction([
+            prisma.transaction.findMany({
+                where: {
+                    OR: [
+                        { payerId: accountId },
+                        { recipientId: accountId }
+                    ]
                 },
-                recipient: {
-                    select: fieldsToSelect
-                }
-            },
-            take: limit,
-            skip: page
-        });
+                include: {
+                    payer: {
+                        select: fieldsToSelect
+                    },
+                    recipient: {
+                        select: fieldsToSelect
+                    }
+                },
+                take: limit,
+                skip: page
+            }),
+            prisma.transaction.count({
+                where: {
+                    OR: [
+                        { payerId: accountId },
+                        { recipientId: accountId }
+                    ]
+                },
+            })
+        ]);
 
         return res.status(200).json({
-            data: transfers
+            data: transfers[0],
+            count: transfers[1]
         });
     }
     catch (e) {
