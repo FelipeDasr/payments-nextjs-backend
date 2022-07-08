@@ -218,8 +218,8 @@ Retorna o saldo da conta
 
 | Campo       | Tipo          | Local | default | Descrição                          |
 |-------------|---------------|-------|---------|------------------------------------|
-| **`page`**  | **`integer`** | body  | 0       | Página dos dados                   |
-| **`limit`** | **`integer`** | body  | 50      | Quantidade de registros por página |
+| **`page`**  | **`integer`** | query | 0       | Página dos dados                   |
+| **`limit`** | **`integer`** | query | 50      | Quantidade de registros por página |
 
 **Exemplo de requisição**
 
@@ -320,8 +320,8 @@ Retorna o saldo da conta
 
 | Campo       | Tipo          | Local | default | Descrição                          |
 |-------------|---------------|-------|---------|------------------------------------|
-| **`page`**  | **`integer`** | body  | 0       | Página dos dados                   |
-| **`limit`** | **`integer`** | body  | 50      | Quantidade de registros por página |
+| **`page`**  | **`integer`** | query | 0       | Página dos dados                   |
+| **`limit`** | **`integer`** | query | 50      | Quantidade de registros por página |
 
 **Exemplo de requisição**
 
